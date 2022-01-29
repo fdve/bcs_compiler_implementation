@@ -1,0 +1,23 @@
+- [x] ANTRL video series tutorial 						(https://www.javadude.com/posts/20091221-antlr3tut/)
+- [x] tutorials point compiler design and CC online website tutorial 		(https://www.tutorialspoint.com/compiler_design/index.htm)
+- [] tutorials point compiler design and CC video tutorials			(https://www.tutorialspoint.com/compiler_design/index.htm)
+- [] naklaus wirth CC book 
+- [] dragon(s) book?
+
+- [] Parser and Lexer — How to Create a Compiler part 1/5 — Converting text into an Abstract Syntax Tree
+
+
+http://ecsharp.net/lllpg/lllpg-part-1
+https://tomassetti.me/parsing-in-csharp/
+https://github.com/rolando95/CSharpParserGenerator
+https://stackoverflow.com/questions/1257268/good-parser-generator-think-lex-yacc-or-antlr-for-net-build-time-only
+https://www.researchgate.net/publication/220280389_A_research_C_compiler
+https://www.py4u.net/discuss/764102
+https://dzone.com/articles/writing-compiler-c-lexical
+https://www.amazon.in/Create-Compiler-Using-ANTLR-Crash-Course-ebook/dp/B09BJ4CRTJ
+https://medium.com/microsoft-open-source-stories/how-microsoft-rewrote-its-c-compiler-in-c-and-made-it-open-source-4ebed5646f98
+https://github.com/dotnet/csharplang
+https://github.com/dotnet/roslyn
+https://stackoverflow.com/questions/31978254/writing-a-compiler-in-c-generating-c-vs-il
+https://www.cl.cam.ac.uk/teaching/0910/CompConstr/NEJ/
+https://www.quora.com/Is-there-any-guide-for-writing-our-own-compiler-in-C-NET-How-can-I-get-started-with-it
