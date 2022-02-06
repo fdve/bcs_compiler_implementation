@@ -1,0 +1,277 @@
+/* FLOAT_CONSTANT      [0-9]+"."[O-9]+ | [O-9]+"." | "."[O-9]+ */
+/* BOOLEAN_COSTANT     "True" | "False" */
+/* CHARACTER_CONSTANT  [a-zA-Z]+ */
+
+/* ID [a-z][a-z0-9]* */
+/* FUNCTIONBLOCK [{][A]*[}] */
+/* FUNCTIONBLOCK [{][A]*[}] */
+
+
+
+"+"                                 { cout << "PLUS <" << yytext << ">" << endl; }
+"-"                                 { cout << "MINUS <" << yytext << ">" << endl; }
+"*"                                 { cout << "TIMES <" << yytext << ">" << endl; }
+"%"                                 { cout << "MODULUS <" << yytext << ">" << endl; }
+
+
+
+-----------------
+
+
+%name CalcParser
+%define LSP_NEEDED
+%define ERROR_BODY = 0
+%define LEX_BODY = 0
+
+%header{
+    #include <iostream>
+    #include <fstream>
+%}
+
+%union {
+    int i_type;
+    char c_type;
+}
+
+%token UNKNOWN
+%token <c_type> PLUS MINUS EQUALS
+%token <i_type> NUMBER
+
+%type <i_type> number subexpression addexpression
+%type <i_type> expression calculation
+
+%start calculation
+
+%%
+
+calculation
+: expression EQUALS { $$ = $1; }
+;
+
+expression
+: addexpression { $$ = $1; }
+;
+
+addexpression
+: subexpression { $$ = $1; }
+| addexpression PLUS subexpression  { $$ = $1 + $3; }
+;
+
+subexpression
+: number    { $$ = $1; }
+| subexpression MINUS number    { $$ = $1 - $3; }
+;
+
+number
+: NUMBER    { $$ = $1; }
+;
+
+%%
+
+
+
+---------------
+
+
+
+
+%{
+#include <stdio.h>
+%}
+
+// Symbols.
+%union
+{
+	char	*sval;
+};
+%token <sval> IDENTIFIER
+%token PROCEDURE
+%token BLOCK
+%token ENDBLOCK
+
+%start Procedure
+%%
+
+Procedure:
+	PROCEDURE IDENTIFIER BLOCK { printf("Procedure : %s\n", $2); }
+	Parts
+	ENDBLOCK
+	;
+
+Parts:
+	/* empty */
+	| Parts Part
+	;
+
+Part:
+	IDENTIFIER BLOCK { printf("\tPart : %s\n", $1); }
+		Keywords
+	ENDBLOCK
+	;
+
+Keywords:
+	/* empty */
+	| Keywords Keyword
+	;
+
+Keyword:
+	IDENTIFIER { printf("\t\tKeyword : %s\n", $1); }
+	;
+%%
+
+/* int yyerror(char *s) {
+  printf("yyerror : %s\n",s);
+} */
+
+int main(void) {
+  yyparse();
+}
+
+
+
+
+------ bison c++ example from docs ----------
+
+
+%require "3.2"
+%language "c++"
+
+%define api.value.type variant
+
+%code
+{
+  // Print a list of strings.
+  auto
+  operator<< (std::ostream& o, const std::vector<std::string>& ss)
+    -> std::ostream&
+  {
+    o << '{';
+    const char *sep = "";
+    for (const auto& s: ss)
+      {
+        o << sep << s;
+        sep = ", ";
+      }
+    return o << '}';
+  }
+}
+
+%define api.token.constructor
+
+%token END_OF_FILE 0
+
+%code
+{
+  namespace yy
+  {
+    // Return the next token.
+    auto yylex () -> parser::symbol_type
+    {
+      static int count = 0;
+      switch (int stage = count++)
+        {
+        case 0:
+          return parser::make_TEXT ("I have three numbers for you.");
+        case 1: case 2: case 3:
+          return parser::make_NUMBER (stage);
+        case 4:
+          return parser::make_TEXT ("And that's all!");
+        default:
+          return parser::make_END_OF_FILE ();
+        }
+    }
+  }
+}
+%%
+result:
+  list  { std::cout << $1 << '\n'; }
+;
+
+%nterm <std::vector<std::string>> list;
+list:
+  %empty     { /* Generates an empty string list */ }
+| list item  { $$ = $1; $$.push_back ($2); }
+;
+
+%nterm <std::string> item;
+%token <std::string> TEXT;
+%token <int> NUMBER;
+
+
+item:
+  TEXT
+| NUMBER  { $$ = std::to_string ($1); }
+;
+
+
+%%
+namespace yy
+{
+  // Report an error to the user.
+  auto parser::error (const std::string& msg) -> void
+  {
+    std::cerr << msg << '\n';
+  }
+}
+
+int main ()
+{
+    yy::parser parse;
+    return parse ();
+}
+
+
+
+----------------
+
+
+http://fhoerni.free.fr/comp/bison_flex.html
+
+// Symbols.
+%union
+{
+	char *sval;
+};
+
+
+%token <sval> IDENTIFIER
+%token PROCEDURE
+%token BLOCK
+%token ENDBLOCK
+%token CONDITIONAL
+
+%start Procedure
+%%
+
+Procedure:
+	PROCEDURE IDENTIFIER BLOCK { printf("Procedure : %s\n", $2); }
+	Parts
+	ENDBLOCK
+	;
+
+Parts:
+	/* empty */
+	| Parts Part
+	;
+
+Part:
+	IDENTIFIER BLOCK { printf("\tPart : %s\n", $1); }
+		Keywords
+	ENDBLOCK
+	;
+
+Keywords:
+	/* empty */
+	| Keywords Keyword
+	;
+
+Keyword:
+	IDENTIFIER { printf("\t\tKeyword : %s\n", $1); }
+	;
+
+
+GobbleIdentifier:
+    IDENTIFIER { printf("\t\Hey look its an identifier! : %s\n", $1); }
+	;
+
+----------------------
