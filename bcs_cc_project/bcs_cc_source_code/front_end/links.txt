@@ -1,7 +1,0 @@
-https://westes.github.io/flex/manual/Cxx.html#Cxx
-https://manpages.org/flexc
-
-http://fhoerni.free.fr/comp/bison_flex.html
-	-> full example containing input txt file, parser.y and parser.lex, how to compile and execute
-
-https://stackoverflow.com/questions/32821775/bison-shift-reduce-conflict-reduce-reduce-conflict-warnings

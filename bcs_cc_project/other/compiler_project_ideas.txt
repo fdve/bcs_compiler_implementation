@@ -1,5 +1,0 @@
-- add visual representation of several stages?
-	(so visual representation of the lexical / syntax / semantical phase, for educational / debugging / overview purposes?)
-		-> how to inject / build that code, independantly of the compiler itself.
-		   So it should be trivial to run the code without the visual component,
-		   without still having a performance deficit etc.
