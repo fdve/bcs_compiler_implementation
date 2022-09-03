@@ -1,1 +1,0 @@
-Bison c++ examples at /usr/share/doc/bison/examples/c++, found by using dpkg -L bison
