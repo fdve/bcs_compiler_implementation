@@ -46,6 +46,5 @@ Sample star source files can be find in the ./source/test_framework/tests direct
 
 Compiling required gcc?, make, flex and bison, 
 
-The /source directory is where the source code of the compiler resides.
-Each subdirectory within the source directory has its own README file.
+The /source directory is where the source code of the compiler resides. Each subdirectory within the source directory has its own README file, describing the directories purpose. 
 
