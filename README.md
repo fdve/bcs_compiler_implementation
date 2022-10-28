@@ -4,7 +4,7 @@ The following programs are needed to use the Star compiler.
 2. Bison
 3. C++ 
 4. Make. 
-5. we use gcc also right? For compiling the tests?
+5. we use gcc also right? For compiling the tests? can we still switch this to AS or nah? 
 
 The compiler has been tested with the program versions stated above. 
 Newer versions should most likely also work, older versions may not.
