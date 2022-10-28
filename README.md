@@ -1,3 +1,7 @@
+### Install script 
+
+Maybe add easy automatic install script here? 
+
 ### Software required
 The following programs are needed to use the Star compiler. 
 1. Flex
