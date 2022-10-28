@@ -6,12 +6,11 @@ The following programs are needed to use the Star compiler.
 4. Make. 
 5. we use gcc also right? For compiling the tests?
 
-The compiler has been tested with the program versions stated above on 
-2 platforms. Newer versions should most likely also work, older versions may not.
-However, no guarantees here. 
-
-The compiler has been tested on 5.10.16.3-microsoft-standard-WSL2 Linux kernel
-and on (test on linux standalone VM version here compiler here)
+The compiler has been tested with the program versions stated above. 
+Newer versions should most likely also work, older versions may not.
+The compiler has been tested on 2 platforms. The first platform 
+was a 5.10.16.3-microsoft-standard-WSL2 Linux kernel, 
+and the second platform a (test on linux standalone VM version here compiler here)
 
 (Also make sure that both test platforms had the same bison flex c++ make etc) 
 
