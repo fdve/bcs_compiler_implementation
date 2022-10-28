@@ -5,6 +5,7 @@ The following programs are needed to use the Star compiler.
 3. C++ 
 4. Make. 
 5. we use gcc also right? For compiling the tests? can we still switch this to AS or nah? 
+6. (optional) the gtest framework, when adding / checking the gtests ?
 
 The compiler has been tested with the program versions stated above. 
 Newer versions should most likely also work, older versions may not.
@@ -14,14 +15,16 @@ and the second platform a (test on linux standalone VM version here compiler her
 
 (Also make sure that both test platforms had the same bison flex c++ make etc) 
 
+[] Add a script which installs all programs automatically? 
+
 ### Language Reference 
-The compiler compiles source programs which are written in a toy language called Star. The reference for this language can be find the root git directory, named langref_star.pdf.
+The compiler compiles source programs which are written in a toy language called Star. The reference for this language can be find the root git directory, named langref_star.pdf. A couple of sample programs written in the Star language can be found in directory Y. 
 
-### Compiling a sample program
+### Compiling a Star program
 
-### Compiling your own program 
+`make compiler`
 
-### Common Pitfalls
+### Common mistakes
 The star language has grammer in which all control flow statements begin with a uppercase character. Therefore,
 a common mistake would be to make if (a > b) or if a > b. instead of If a > b 
 
