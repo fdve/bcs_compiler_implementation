@@ -1,6 +1,11 @@
 ### Software required
 The following programs are needed to use the Star compiler. 
-Bison, Flex, C++ and Make. 
+1. Flex
+2. Bison
+3. C++ 
+4. Make. 
+
+
 The following versions were used to test it 
 ....
 The compiler has been tested on 5.10.16.3-microsoft-standard-WSL2 Linux kernel
