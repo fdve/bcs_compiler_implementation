@@ -56,7 +56,11 @@ quadOpType Quad::SourceOptoQuadOp(std::string op, std::string type) {
     else if(op == ">")   return type == "float" ? quadOpType::fgt : quadOpType::igt;
     else if(op == "&&")  return quadOpType::iand;
     else if(op == "||")  return quadOpType::ior;
-    else                 cout_str("error : unrecognized source operator in tac.cpp SourceOptoQuadOp(...)");
+    else {
+        cout_str(std::string("error : unrecognized source operator in tac.cpp SourceOptoQuadOp(...), ")
+        + "returning quadOpType::nop...");
+        return quadOpType::nop;
+    }
 }
 
 /* Overload the output stream operator to print quad operations types. */
@@ -67,6 +71,7 @@ std::ostream& operator<<(std::ostream& os, quadOpType qType) {
         case quadOpType::iminus : return os << "-" ;
         case quadOpType::fminus : return os << "-" ;
         case quadOpType::iunmin : return os << "-" ;
+        case quadOpType::iunnot : return os << "!" ;
         case quadOpType::funmin : return os << "-" ;
         case quadOpType::idiv : return os << "/" ;
         case quadOpType::fdiv : return os << "/" ;
@@ -81,6 +86,7 @@ std::ostream& operator<<(std::ostream& os, quadOpType qType) {
         case quadOpType::ireturn : return os << "ireturn" ;
         case quadOpType::freturn : return os << "freturn" ;
         case quadOpType::jmp : return os << "jmp";
+        case quadOpType::jmplabel : return os << "jmplabel";
         case quadOpType::ilt : return os << "<";
         case quadOpType::flt : return os << "<";
         case quadOpType::ileq : return os << "<=";
@@ -94,6 +100,7 @@ std::ostream& operator<<(std::ostream& os, quadOpType qType) {
         case quadOpType::igt : return os << ">";
         case quadOpType::fgt : return os << ">";
         case quadOpType::iand : return os << "&&";
+        case quadOpType::fand : return os << "&&";
         case quadOpType::ior : return os << "||";
         case quadOpType::nop : return os << "NOP";
     };
@@ -110,6 +117,7 @@ std::ostream& operator<<(std::ostream& os, quadArgType qArgType) {
         case quadArgType::floatConst : return os << "floatConst" ;
         case quadArgType::boolConst : return os << "boolConst" ;
         case quadArgType::label : return os << "label" ;
+        case quadArgType::unaryOp : return os << "unaryOp" ;
     };
     return os << "unrecognized quadArgType in op ostream operator overloading : " << (int)qArgType;
 }

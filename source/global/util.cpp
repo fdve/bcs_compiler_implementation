@@ -6,6 +6,7 @@
 #include "../headers/ast.h"
 #include "../headers/util.h"
 #include "../headers/parser.hpp"
+#include "../headers/main.h"
 
 /* Allocate a pointer in the heap and set its contents to given YYLTYPE info struct. */
 YYLTYPE* newInfo(YYLTYPE *info) {
@@ -59,4 +60,30 @@ bool checkCorrectFileExt(std::string fileName) {
         return 0;
     }
     return fileName.substr(fileName.size() - 5) == ".star";
+}
+
+/* Parsing the given command line arguments. */
+compFlags ParseCmmndLineArgs(int argc, char *argv[]) {
+    compFlags flags;
+
+    for(int i = 2; i < argc; i++) {
+        std::string argvStr = std::string(argv[i]);
+
+        if(argvStr.substr(0,4) == "--d=" && argvStr.size() > 4) {
+            flags.customFileDest = 1;
+            flags.fileDest = argvStr.substr(4, argvStr.size() - 4);
+        }
+        else if(argvStr.substr(0,4) == "-ast" && argvStr.size() == 4) {
+            flags.printAst = 1;
+        }
+        else if(argvStr.substr(0,4) == "-tac" && argvStr.size() == 4) {
+            flags.printTac = 1;
+        }
+        else {
+            std::cout << "invalid flag : " + argvStr << std::endl;
+            flags.invalidFlag = true;
+        }
+    }
+
+    return flags;
 }

@@ -492,8 +492,6 @@ bool ASMCodeGenerator::GenerateASMFromQuad() {
                  std::vector<std::string> moveFncArgs;
 
                  while(funcCallparams.size() != 0) {
-                     int paramNumber = funcCallparams.size();
-
                      QuadInstruc paramInstr = funcCallparams.back();
                      funcCallparams.pop_back();
 

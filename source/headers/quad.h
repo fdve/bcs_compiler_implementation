@@ -43,8 +43,7 @@ enum quadOpType : int {
     ior,            // (int)   ||
     jmp,
     jmplabel,
-    nop,            // do nothing
-    icond
+    nop            // do nothing
 };
 
 /* The type of the arg1, arg2, or result quad field. */

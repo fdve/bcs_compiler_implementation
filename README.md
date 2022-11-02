@@ -32,6 +32,8 @@ The compiler compiles source programs which are written in a toy language called
 The star language has grammer in which all control flow statements begin with a uppercase character. Therefore,
 a common mistake would be to make if (a > b) or if a > b. instead of If a > b
 
+to pitfills : i++ is not present, use i+=1 instead;
+
 ### Running the test framework
 
 `make compiler` // compiles the Star compiler

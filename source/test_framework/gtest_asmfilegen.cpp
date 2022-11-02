@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     std::string outputFilePath = "./source/test_framework/test_files/gen_asm_files/";
 
     /* Test files which will return an int value. */
-    std::vector<std::string> intFileNames = { "asm_assign", "asm_neg", "asm_arithmetic", "asm_cf",
+    std::vector<std::string> intFileNames = { "asm_op_prec", "asm_assign", "asm_neg", "asm_arithmetic", "asm_cf",
                                               "asm_call_simple1", "asm_call_simple2", "asm_call_bool", "asm_call_mixed"};
 
     /* Test files which return a float value. */
@@ -68,6 +68,10 @@ int main(int argc, char *argv[]) {
             ASMCodeGenerator::SetEntryPoint("test_" + filesWithType.at(i).first);
 
         }
-        CompileSourceFile(2, tempInputFilePath, tempOutputFilePath, CompilePhase::all);
+        compFlags flags;
+        flags.fileDest = tempOutputFilePath;
+        flags.customFileDest = true;
+
+        CompileSourceFile(2, tempInputFilePath, CompilePhase::all, flags);
     }
 }

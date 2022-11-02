@@ -206,12 +206,12 @@ STATEMENTS :
     ;
 
 STATEMENT :
-      VARIABLE_DEF                                    { $$ = $1; }
+      FUNCTION_BLOCK                                  { $$ = $1; }
+    | VARIABLE_DEF                                    { $$ = $1; }
     | ASSIGNMENT                                      { $$ = $1; }
     | EXPRESSION_SC                                   { $$ = $1; }
     | RETURN_CALL                                     { $$ = $1; }
     | CONTROL_FLOW                                    { $$ = $1; }
-    | FUNCTION_BLOCK                                  { $$ = $1; }
     ;
 
 FUNCTION_BLOCK :

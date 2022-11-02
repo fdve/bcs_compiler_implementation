@@ -33,7 +33,7 @@ parser :
 # Compiling and combining the remaining needed source files for the Star compiler
 combine_no_gtest :
 	g++ -g -Wall -o star_compiler $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp \
-	$(MAINDIR)/entry.cpp \
+	$(MAINDIR)/compiler_main.cpp $(MAINDIR)/compile_source_file.cpp  \
 	$(filter-out $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp, $(wildcard $(FRONTDIR)/*.cpp)) \
 	$(wildcard $(MIDDIR)/*.cpp) \
 	$(wildcard $(BACKDIR)/*.cpp) \
@@ -44,8 +44,8 @@ combine_no_gtest :
 combine_gtest :
 	g++ $(TESTFWDIR)/gtest_main.cpp -lgtest -lpthread -o google_test -g -Wall -o run_gtest \
 	$(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp \
-	$(MAINDIR)/entry.cpp \
-	$(filter-out $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp $(FRONTDIR)/main.cpp, $(wildcard $(FRONTDIR)/*.cpp)) \
+	$(MAINDIR)/compile_source_file.cpp \
+	$(filter-out $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp $(FRONTDIR)/compiler_main.cpp, $(wildcard $(FRONTDIR)/*.cpp)) \
 	$(wildcard $(MIDDIR)/*.cpp) \
 	$(wildcard $(BACKDIR)/*.cpp) \
 	$(wildcard $(GLOBALDIR)/*.cpp) \
@@ -54,8 +54,8 @@ combine_gtest :
 # Compiling the compiler and creating a binary which will compile test Star source files into x86_64 ASM
 combine_gtest_gen_asm :
 	g++ $(TESTFWDIR)/gtest_asmfilegen.cpp -g -Wall -o gen_asm_files $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp \
-	$(MAINDIR)/entry.cpp \
-	$(filter-out $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp $(FRONTDIR)/main.cpp, $(wildcard $(FRONTDIR)/*.cpp)) \
+	$(MAINDIR)/compile_source_file.cpp \
+	$(filter-out $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp $(FRONTDIR)/compiler_main.cpp, $(wildcard $(FRONTDIR)/*.cpp)) \
 	$(wildcard $(MIDDIR)/*.cpp) \
 	$(wildcard $(BACKDIR)/*.cpp) \
 	$(wildcard $(GLOBALDIR)/*.cpp)
@@ -73,15 +73,15 @@ clean_gtest:
 # Remove the generated files from the compiler
 clean_compiler:
 	$(RM) $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp star_compiler $(HEADERSDIR)/parser.hpp \
-	$(FRONTDIR)/parser.output \
-	$(RM) ./source/asm_out/x86_64_asm_file.s
+	$(FRONTDIR)/parser.output
+	# $(RM) ./asm_out/*
 
 # Remove the generated files from the compiler and the gtest framework
 clean:
 	$(RM) $(FRONTDIR)/lexer.cpp $(FRONTDIR)/parser.cpp star_compiler run_gtest gen_asm_files $(HEADERSDIR)/parser.hpp \
 	$(FRONTDIR)/parser.output \
-	$(RM) $(GTESTASMDIR)/*.s \
-	$(RM) ./asm_out/x86_64_asm_file.s
+	$(RM) $(GTESTASMDIR)/*.s
+	# $(RM) ./asm_out/*
 
 
 .PHONY: clean

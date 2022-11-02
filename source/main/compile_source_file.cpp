@@ -26,14 +26,15 @@ extern ASTNode *ASTRoot;
 
 /* Try to compile input file to asm at the default output file path. */
 int CompileSourceFile(int argc, std::string inputFile, int compilePhase) {
-    return CompileSourceFile(argc, inputFile, ASMCodeGenerator::defaultFilePath, compilePhase);
+    return CompileSourceFile(argc, inputFile, compilePhase, compFlags{});
 }
 
-/* Try to compile input file to asm at the user provided output file path. */
-int CompileSourceFile(int argc, std::string inputFile, std::string outputFile, int compilePhase) {
-    if(argc == 1 || argc > 2) {
-        cout_str("error : expected one argument (file to be compiled), got "
-        + std::to_string(argc - 1) + " instead.");
+/* Try to compile input file to asm with user provided compile flags. */
+int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFlags flags) {
+    if(argc == 1 || argc > 5) {
+        cout_str("error : unexpected amount of command line args (" + std::to_string(argc - 1)
+        + "), expected between 2 - 4");
+        cout_str(cmmndLineArgsUsage);
         return 1;
     }
 
@@ -73,8 +74,12 @@ int CompileSourceFile(int argc, std::string inputFile, std::string outputFile, i
     TypeVisitor astTypeVisitor;
     QuadGenVisitor quadGenVisitor;
 
-    /* Print the tree. */
-    // ASTRoot->VisitASTNode(&astPrintVisitor);
+    /* If ast flag provided, print the tree. */
+    if(flags.printAst) {
+        cout_str("\n|-------- PRINTING THE ABSTRACT SYNTAX TREE --------|");
+        ASTRoot->VisitASTNode(&astPrintVisitor);
+        cout_str("|--------------------------------------------------|\n");
+    }
 
     /* Print all the scopes. */
     // Scope::PrintScopes(Scope::globalScope, 0);
@@ -96,8 +101,12 @@ int CompileSourceFile(int argc, std::string inputFile, std::string outputFile, i
      * will be stored in the Quad class static field Quad::QuadInstrucs. */
     ASTRoot->VisitASTNode(&quadGenVisitor);
 
-    /* Printing out the generated Quad. */
-    Quad::PrintQuadInstrucs(Quad::QuadInstrucs);
+    /* If tac flag provided, print out the generated three-address code. */
+    if(flags.printTac) {
+        cout_str("\n|--------- PRINTING THE THEE-ADDRESS CODE ---------|");
+        Quad::PrintQuadInstrucs(Quad::QuadInstrucs);
+        cout_str("|---------------------------------------------------|\n");
+    }
 
     if(ErrLog::errorMsgs.size() != 0) {
         ErrLog::PrintErrors();
@@ -116,6 +125,8 @@ int CompileSourceFile(int argc, std::string inputFile, std::string outputFile, i
         return 1;
     }
 
+    std::string outputFile = flags.customFileDest ? flags.fileDest : ASMCodeGenerator::defaultFilePath;
+
     bool writeFileSucces = ASMCodeGenerator::GenerateAssemblyFile(outputFile);
 
     if(!writeFileSucces) {
@@ -123,7 +134,7 @@ int CompileSourceFile(int argc, std::string inputFile, std::string outputFile, i
         return 1;
     }
 
-    cout_str("Generated assembly successfully, written to file " + outputFile);
+    std::cout << "Generated assembly successfully, written to file " << outputFile;
 
     return 0;
 }

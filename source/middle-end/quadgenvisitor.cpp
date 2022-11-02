@@ -346,6 +346,7 @@ symTableEntry* QuadGenVisitor::visit(Expression *expr) {
     }
     else {
         cout_str("error : unrecognized expression in QuadGenVisitor::visit, QuadGenVisitor");
+        return nullptr;
     }
 }
 

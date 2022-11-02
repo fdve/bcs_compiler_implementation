@@ -8,6 +8,7 @@
 class ASTNode;
 
 struct YYLTYPE;
+struct compFlags;
 
 /* Either compile every phase (0), or only the front-end (1),
  * or the front and middle end (2). */
@@ -16,6 +17,11 @@ enum CompilePhase {
     front,
     middle
 };
+
+static const std::string cmmndLineArgsUsage = std::string("--d=destination_path to define the path")
++ " for the compiled file\n-ast to print the ast generated during compilation"
++ "\n-tac to print the generated three-address code.";
+
 
 YYLTYPE* newInfo(YYLTYPE *info);
 
@@ -36,3 +42,5 @@ void cout_str(std::string msg);
 std::string spaced_str(int spaces);
 
 bool checkCorrectFileExt(std::string fileName);
+
+compFlags ParseCmmndLineArgs(int argc, char *argv[]);

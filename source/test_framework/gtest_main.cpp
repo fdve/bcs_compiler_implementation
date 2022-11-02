@@ -197,6 +197,12 @@ TEST(FrontEndTests, InvalidCharDecl) {
 	EXPECT_TRUE(ErrLog::errorMsgs.at(0) ==  ErrLog::IllegitimateChar(ErrLog::CreateInfo(2,14), "many_args"));
 }
 
+/* Testing arithmetic and logical operators precendence. */
+extern "C" int test_asm_op_prec();
+TEST(BackEndTests, AsmOpPrec) {
+	EXPECT_EQ(test_asm_op_prec(), 0);
+}
+
 /* Testing integer asm generated arithmetic. */
 extern "C" int test_asm_arithmetic();
 TEST(BackEndTests, AsmArithmetic) {

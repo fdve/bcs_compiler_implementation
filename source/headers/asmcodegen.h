@@ -3,6 +3,8 @@
 
 enum quadOpType : int;
 
+struct compFlags;
+
 class QuadInstruc;
 
 #include <vector>
@@ -64,5 +66,5 @@ class ASMCodeGenerator {
 
         friend class ASMCodeGenVisitor;
         friend class Quad;
-        friend int CompileSourceFile(int argc, std::string inputFile, std::string outputFile, int compilePhase);
+        friend int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFlags flags);
 };
