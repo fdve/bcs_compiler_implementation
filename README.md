@@ -6,10 +6,16 @@ Maybe add easy automatic install script here?
 The following programs are needed to use the Star compiler.
 1. Flex
 2. Bison
-3. C++
+3. A C++ compiler
 4. Make.
-5. we use gcc also right? For compiling the tests? can we still switch this to AS or nah?
-6. (optional) the gtest framework, when adding / checking the gtests ?
+5. (for gtest) GCC for the test framework
+6. (for gtest) The google test framework
+
+The root directoy contains an get_depends.sh script which will install all the required dependencies for the compiler itself and for the tets framework of the compiler.
+
+[] test compiler on MacOS
+[] test compiler on WSL2
+[] test compiler on Ubuntu distro itself
 
 The compiler has been tested with the program versions stated above.
 Newer versions should most likely also work, older versions may not.
