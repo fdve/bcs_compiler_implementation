@@ -1,6 +1,5 @@
 ### Install script
-
-Maybe add easy automatic install script here?
+Run the get_depends.sh script to install all the dependencies needed for the compiler and for the compilers test framework. The programs needed are Flex, Bison, a c++ compiler, gcc, Make and the google test framework.
 
 ### Software required
 The following programs are needed to use the Star compiler.

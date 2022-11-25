@@ -170,6 +170,9 @@ void QuadGenVisitor::visit(Statement *stmnt) {
         quadArg conditional = quadArg{0, nullptr, exprTemporaryRef->name, "",
                                quadArgType::variable, exprTemporaryRef};
 
+       /* If the value of the conditional temporary is false, jump to either
+       * (1) else statements if such statements are present;
+       * (2) if no else statements, jump to first statement outside the if statement. */
         QuadInstruc instr = QuadInstruc(quadOpType::jmp, conditional, quadArg{}, resultArg);
         Quad::QuadInstrucs.push_back(instr);
 
@@ -179,16 +182,27 @@ void QuadGenVisitor::visit(Statement *stmnt) {
             }
         }
 
-        /* If the value of the conditional temporary is false, jump to either
-         * (1) else statements if such statements are present;
-         * (2) if no else code, jump to first code outside the if statement. */
         if(!check_nullptr(cfIf->elseStmnts, "cfIf->elseStmnts")) {
+            /* Add a jump call to the end of the else statements so that when the if
+            * condition is true, and every if statement has been visited, the else
+            * statements are skipped. */
+            quadArg qArgEndElse;
+            qArgEndElse.label = Quad::GetNewCFLabel();
+            QuadInstruc jmpInstrEndElse = QuadInstruc(quadOpType::jmp, quadArg{}, quadArg{}, qArgEndElse);
+            Quad::QuadInstrucs.push_back(jmpInstrEndElse);
+
+            /* Add label to jump to the else statements whenever the if condition is false. */
             QuadInstruc instr = QuadInstruc(quadOpType::jmplabel, quadArg{}, quadArg{}, resultArg);
             Quad::QuadInstrucs.push_back(instr);
 
             for(Statement *stmnt : *cfIf->elseStmnts) {
                 visit(stmnt);
             }
+
+            /* Add label so that else statements can be skipped whenever the end
+             * of the if statements have been reached. */
+            QuadInstruc jmpLabelEndElse = QuadInstruc(quadOpType::jmplabel, quadArg{}, quadArg{}, qArgEndElse);
+            Quad::QuadInstrucs.push_back(jmpLabelEndElse);
         }
         else {
             QuadInstruc instr = QuadInstruc(quadOpType::jmplabel, quadArg{}, quadArg{}, resultArg);
