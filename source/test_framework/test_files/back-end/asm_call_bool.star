@@ -21,6 +21,6 @@ int start() {
         Return 123;
     }
     Else {
-        Return 456;
+        Return 1;
     }
  }

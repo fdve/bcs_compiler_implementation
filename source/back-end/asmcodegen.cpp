@@ -526,7 +526,7 @@ bool ASMCodeGenerator::GenerateASMFromQuad() {
                 /* If call return type is non void, store the returned result. */
 
                 /* There will be an entry for the result argument of the call quad
-                 * if the function call is of type non void. */
+                 * if the function call is not of type void. */
                 if(instr.result.entryRef != nullptr) {
                     std::string resultArgType = instr.result.entryRef->type;
 
@@ -747,7 +747,7 @@ std::string ASMCodeGenerator::GenFloatConstDef(float f) {
     return floatConstDefSStream.str();
 }
 
-/* Generate x86-64 float instruction string. */
+/* Generate x86-64 float store instruction string. */
 void ASMCodeGenerator::GenFloatASMStore(float f, QuadInstruc instr) {
     int constantNum = localConstCounter;
 

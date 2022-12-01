@@ -29,6 +29,8 @@ void PrintVisitor::visit(ASTNode *node, int depth) {
 void PrintVisitor::visit(Program *node, int depth) {
     Program *progNode = dynamic_cast<Program*>(node);
 
+    std::cout << "Program Node, root node of AST" << std::endl;
+
     for(FuncDecl *funcDec : *progNode->lhs) { visit(funcDec, DEPTH_INCR); }
     visit(progNode->start_fnc, DEPTH_INCR);
     for(FuncDecl *funcDec : *progNode->rhs) { visit(funcDec, DEPTH_INCR); }
@@ -36,23 +38,14 @@ void PrintVisitor::visit(Program *node, int depth) {
 
 void PrintVisitor::visit(FuncDecl *funcDec, int depth) {
     if(!funcDec->id) {
-        std::cout << spaced_str(depth) << "FuncDecl = id is nullptr, return." << std::endl;
+        std::cout << spaced_str(depth) << "FuncDecl id is nullptr, return." << std::endl;
         return;
     }
 
-    std::cout << spaced_str(depth) << "FuncDec type:" << funcDec->type << " id:" << funcDec->id->name;
-
-    if(funcDec->id->entryRef == nullptr) {
-        std::cout << spaced_str(depth) << "symTableEntry: nullptr" << std::endl;
-    }
-    else {
-        std::cout << "  " << "symTableEntry : ";
-        std::cout << "EntryAddress:  " << funcDec->id->entryRef;
-        SymbolTable::PrintEntry(*(funcDec->id->entryRef), 1);
-    }
+    std::cout << spaced_str(depth) << "FuncDec type:" << funcDec->type << " id:" << funcDec->id->name << std::endl;
 
     if(!funcDec->paramList) {
-        std::cout << spaced_str(depth) << "paramList is nullptr of func decl  id:" << funcDec->id->name << std::endl;
+        std::cout << spaced_str(depth) << "paramList is nullptr of funcDec " << funcDec->id->name << std::endl;
     }
     else {
         for(FuncDeclParam *funcDeclParam : *funcDec->paramList) {
@@ -76,31 +69,11 @@ void PrintVisitor::visit(Statement *stmnt, int depth) {
         }
     }
     else if(VariableDef *temp = dynamic_cast<VariableDef*>(stmnt)) {
-        std::cout << spaced_str(depth) << "VarDef type:" << temp->type << " id:" << temp->id->name;
-
-        if(temp->id->entryRef == nullptr) {
-            std::cout << spaced_str(depth) << "symTableEntry: nullptr" << std::endl;
-        }
-        else {
-            std::cout << "  " << "symTableEntry : ";
-            std::cout << "EntryAddress:  " << temp->id->entryRef;
-            SymbolTable::PrintEntry(*(temp->id->entryRef), 1);
-        }
-
+        std::cout << spaced_str(depth) << "VarDef type:" << temp->type << " id:" << temp->id->name << std::endl;
         visit(temp->expr, depth + DEPTH_INCR);
     }
     else if(Assignment *assign = dynamic_cast<Assignment*>(stmnt)) {
-        std::cout << spaced_str(depth) << "Assignment id:" << assign->id->name << " op:" << assign->assignOp;
-
-        if(assign->id->entryRef == nullptr) {
-            std::cout << spaced_str(depth) << "symTableEntry: nullptr" << std::endl;
-        }
-        else {
-            std::cout << "  " << "symTableEntry : ";
-            std::cout << "EntryAddress:  " << assign->id->entryRef;
-            SymbolTable::PrintEntry(*(assign->id->entryRef), 1);
-        }
-
+        std::cout << spaced_str(depth) << "Assignment id:" << assign->id->name << " op:" << assign->assignOp << std::endl;
         visit(assign->expr, depth + DEPTH_INCR);
     }
     else if(ExprStmnt *exprStmnt = dynamic_cast<ExprStmnt*>(stmnt)) {
@@ -124,7 +97,7 @@ void PrintVisitor::visit(Statement *stmnt, int depth) {
                 visit(stmnt, depth + DEPTH_INCR);
             }
         }
-        if(!check_nullptr(cfIf->elseStmnts, "cfIf->elseStmnts")){
+        if(cfIf->elseStmnts != nullptr){
             for(Statement *stmnt : *cfIf->elseStmnts) {
                 visit(stmnt, depth + DEPTH_INCR);
             }
@@ -187,16 +160,7 @@ void PrintVisitor::visit(Expression *expr, int depth) {
         }
     }
     else if(Identifier *identifier = dynamic_cast<Identifier*>(expr)) {
-        std::cout << spaced_str(depth) << "Identifier name:" << identifier->name << " ";
-
-        if(identifier->entryRef == nullptr) {
-            std::cout << spaced_str(depth) << "symTableEntry: nullptr" << std::endl;
-        }
-        else {
-            std::cout << "  " << "symTableEntry : ";
-            std::cout << "EntryAddress:  " << identifier->entryRef;
-            SymbolTable::PrintEntry(*(identifier->entryRef), 1);
-        }
+        std::cout << spaced_str(depth) << "Identifier name:" << identifier->name << std::endl;
     }
     else if(IntConst *constant = dynamic_cast<IntConst*>(expr)) {
         std::cout << spaced_str(depth) << "IntConst value:" << constant->value << std::endl;

@@ -182,7 +182,7 @@ void QuadGenVisitor::visit(Statement *stmnt) {
             }
         }
 
-        if(!check_nullptr(cfIf->elseStmnts, "cfIf->elseStmnts")) {
+        if(cfIf->elseStmnts != nullptr) {
             /* Add a jump call to the end of the else statements so that when the if
             * condition is true, and every if statement has been visited, the else
             * statements are skipped. */
