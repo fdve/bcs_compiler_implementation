@@ -1,1 +1,1 @@
-/* Summaryize the backend / where all the files are etc. */
+The back-end of the Star compiler consist of the file asmcodegen.cpp. This file defines parameter number to register mappings for x86-64 function call procedures, formats the Assembly, iterates over all the given Quadruples from the middle-end and generates appropriate x86-64 assembly and executes generally the tasks needed to generate the x86-64 Assembly. 

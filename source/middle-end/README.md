@@ -1,0 +1,3 @@
+quadgenvisitor.cpp is the core of the middle-end. All the nodes of the abstract syntax tree are visited and appropriate three-address code is generated in data structure representation of a Quadruple. Symbol table entries are also created if needed.
+
+quad.cpp takes care of creating quads, getting new compiler temporaries, getting three-address code lables for instructions to jump to, converting operators found in abstract syntax tree nodes into the corresponding quadruple operation, as well as printing quadruples which is needed for debugging and for printing the three-address code when the -tac flag is provided.
