@@ -2,6 +2,8 @@ The test framework makes use of the GoogleTest framework https://github.com/goog
 
 The input tests are located in the /test_files/front-end and /test_files/back-end subdirectory (there is currently no middle-end testing).
 
+gtest_main.cpp is where the tests are called and executed. 
+
 ### Front-end testing
 Front-end testing works by  
 1. either parsing the test file and checking if parsing errors occured.
