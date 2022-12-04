@@ -1,6 +1,6 @@
 The test framework makes use of the GoogleTest framework https://github.com/google/googletest.
 
-The input tests are located in the front-end and back-end subdirectory (there is currently no middle-end testing).
+The input tests are located in the /test_files/front-end and /test_files/back-end subdirectory (there is currently no middle-end testing).
 
 ### Front-end testing
 Front-end testing works by  
