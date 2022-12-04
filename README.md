@@ -33,7 +33,7 @@ Afterwards the generated assembly is compiled with gcc, and finally the compiled
 
 `echo $?` can be used in bash after executing the compiled assembly to print the return value returned by the int start() function of the Star source file. Keep in mind that this value ranges from 0 - 255, but can be useful for checking the result of a simple calculation.
 
-Other flags which can be supplied while compiling a program are -ast for printing the abstract syntax tree and -tac for printing the generated three-address code.
+Other flags which can be supplied while compiling a program are -ast for printing the abstract syntax tree and -tac for printing the generated three-address code. If the --d flag is omitted, then the generated Assembly is placed in the /asm_out folder. 
 
 
 ### Possible syntax errors
