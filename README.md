@@ -1,4 +1,3 @@
-
 ### Software required
 The following programs are needed to use the Star compiler.
 1. Flex
@@ -12,60 +11,35 @@ The following programs are needed to use the Star compiler.
 Run the get_depends.sh script to install all the dependencies needed for the compiler and for the compilers test framework.
 
 ### Tested
-[] test compiler on MacOS? Of laten we dat zitten?
-[x] test compiler on WSL2
-[x] test compiler on Ubuntu distro itself
-    [x] ran the get_depends, gtest framework worked, but might need a clean ubuntu install  
-    [x] now test some sample programs
+The compiler has been tested on a 5.10.16.3-microsoft-standard-WSL2 Linux kernel,
+as well as also on an operatating system running Ubuntu 20.04.5 LTS.
 
-The compiler has been tested with the following program versions :
-flex 2.6.4
-bison 3.5.1
-gcc and g++ 9.4
-make 4.2.1
-libgtest 1.10.0-2
-
-The compiler has been tested on a 5.10.16.3-microsoft-standard-WSL2 Linux kernel
-inside of Windows 10,
-as well as also on an operatating system running Ubuntu 20.04.5 LTS,
-
-and the third platform (maybe test on MacOs? )
-
-(test on linux standalone VM version here compiler here)
-
-[x] make sure that both test platforms had the same bison flex c++ make etc
-
-### Compiler interface
-Should we talk about the supported flags etc?
+The versions of the tools which were used during testing :
+1. flex 2.6.4
+2. bison 3.5.1
+3. gcc and g++ 9.4
+4. make 4.2.1
+5. libgtest 1.10.0-2
 
 ### Language Reference
-The compiler compiles source programs which are written in a toy language called Star. The reference for this language can be find the root git directory, named langref_star.pdf. A couple of sample programs written in the Star language can be found in directory Y.
+The compiler compiles source programs which are written in a toy language called Star. The reference for the Star language can be found the root directory, named language_reference_star.pdf. A couple of sample programs written in the Star language can be found in the root directory /star_examples.
 
 ### Compiling a Star program
-To compile a Star program, the following command can be used :
-make compile; ./star_compiler my_star_file.star --d=star_output.s; gcc star_output.s -o; ./a.out; echo $?
-This will compile the compiler, then feed the my_star_file.star to the compiler together
-with the --d  flag determining the location of the output file to be in the same
-directory with the name star_output.s, afterwards compiling the generated assembly
-with gcc, and finally executing the compiled program.
+To compile a Star program, the following command can be used:  
+`make compiler; ./star_compiler test_file.star --d=star_output.s; gcc star_output.s; ./a.out;`  
+This will compile the compiler, then feed the test_file.star to the compiled compiler.
+The --d flag determines the location of the output Assembly, which in this case is a file named star_output.s in the same directory.
+Afterwards the generated assembly is compiled with gcc, and finally the compiled assembly is executed.
 
-### Common mistakes
-The Star language control flow statements all begin with an uppercase character. Therefore,
-a common mistake would be to make if (a > b) or if a > b instead of If a > b or If a > b.
+`echo $?` can be used in bash after executing the compiled assembly to print the return value returned by the start function. Keep in mind that this value ranges from 0 - 255, but can be useful when checking the result of a simple calculation.
 
-Another thing to keep in mind that i++ is not currently supported by the compiler,
-use i += 1 instead.
+Other flags which can be supplied while compiling a program are -ast for printing the abstract syntax tree and -tac for printing the generated three-address code.
+
+
+### Possible syntax errors
+Keep in mind that all the Star language control flow statements begin with an uppercase character. Also, incrementing a variable like i++ is not currently supported by the compiler, therefore use i += 1 instead.
 
 ### Running the test framework
-`make compiler` // compiles the Star compiler
-
-The Compiler can be compiled using the make command, followed
-by passing a Star source file to the compiled binary :
-make;
-./star_compiler my_star_source_file.star
-
-Sample star source files can be find in the ./source/test_framework/tests directroy
-
-Compiling required gcc?, make, flex and bison,
-
-The /source directory is where the source code of the compiler resides. Each subdirectory within the source directory has its own README file, describing the directories purpose.
+The test framework can be running the following command:   
+`make gtest; ./run_gtest`  
+This will compile the test framework and run the tests. The errors found in the front-end test files are emitted, and can be used to understand what type of errors is being looked for. 
