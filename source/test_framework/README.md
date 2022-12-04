@@ -4,9 +4,8 @@ The input tests are located in the front-end and back-end subdirectory (there is
 
 ### Front-end testing
 Front-end testing works by  
-    (1) either parsing the test file and checking if parsing errors occured.
-    (2) parsing and then performing semantic analysis, checking e.g whether any
-        type incompatibility or function call paramater mismatch errors happened.
+1. either parsing the test file and checking if parsing errors occured.
+2. parsing and then performing semantic analysis, checking e.g whether any type incompatibility or function call paramater mismatch errors happened.
 
 The test checks whether the amount of expected error messages are generated. Also check whether the generated errors are the same as the expected errors.
 
