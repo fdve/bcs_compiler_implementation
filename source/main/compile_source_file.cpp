@@ -134,7 +134,7 @@ int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFla
         return 1;
     }
 
-    std::cout << "Generated assembly successfully, written to file " << outputFile;
+    std::cout << "Generated assembly successfully, written to file " << outputFile << std::endl;
 
     return 0;
 }

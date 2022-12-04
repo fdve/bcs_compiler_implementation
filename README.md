@@ -12,17 +12,28 @@ The following programs are needed to use the Star compiler.
 Run the get_depends.sh script to install all the dependencies needed for the compiler and for the compilers test framework.
 
 ### Tested
-[] test compiler on MacOS
+[] test compiler on MacOS? Of laten we dat zitten?
 [x] test compiler on WSL2
-[] test compiler on Ubuntu distro itself
+[x] test compiler on Ubuntu distro itself
+    [x] ran the get_depends, gtest framework worked, but might need a clean ubuntu install  
+    [x] now test some sample programs
 
-The compiler has been tested with the program versions stated above.
-Newer versions should most likely also work, older versions may not.
-The compiler has been tested on 2 platforms. The first platform
-is a 5.10.16.3-microsoft-standard-WSL2 Linux kernel,
-and the second platform a (test on linux standalone VM version here compiler here)
+The compiler has been tested with the following program versions :
+flex 2.6.4
+bison 3.5.1
+gcc and g++ 9.4
+make 4.2.1
+libgtest 1.10.0-2
 
-(Also make sure that both test platforms had the same bison flex c++ make etc)
+The compiler has been tested on a 5.10.16.3-microsoft-standard-WSL2 Linux kernel
+inside of Windows 10,
+as well as also on an operatating system running Ubuntu 20.04.5 LTS,
+
+and the third platform (maybe test on MacOs? )
+
+(test on linux standalone VM version here compiler here)
+
+[x] make sure that both test platforms had the same bison flex c++ make etc
 
 ### Compiler interface
 Should we talk about the supported flags etc?

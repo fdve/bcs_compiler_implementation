@@ -18,7 +18,7 @@ int ASMCodeGenerator::localConstCounter = 0;
 bool ASMCodeGenerator::setMainLabelToEntry = 0;
 
 std::string ASMCodeGenerator::x86_64_ENTRY_POINT = "main";
-const std::string ASMCodeGenerator::x86_64_FUNC_INTRO = "    pushq    %rbp\n    movq     %rsp,  %rbp\n";
+const std::string ASMCodeGenerator::x86_64_FUNC_INTRO = "    pushq    %rbp\n    movq     %rsp,  \t   %rbp\n";
 const std::string ASMCodeGenerator::x86_64_FUNC_OUTRO = "     movq    %rbp,  %rsp\n    popq    %rbp\n    retq\n\n";
 const std::string ASMCodeGenerator::defaultFilePath = "./asm_out/x86_64_asm_file.s";
 
