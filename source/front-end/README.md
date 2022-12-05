@@ -14,4 +14,4 @@ Scope management is implemented in scope.cpp. During runtime, scopes are being s
 
 Type resolution and type comparison is implemented in typeresolution.cpp. Expressions can take the form of tree structures, which can make it difficult to determine the types of every expression node in such a tree on creation. This is why a seperate pass over expressions is made to annotate the expression nodes with the correct types.
 
-Semantic analysis is implemented in typevisitor.cpp. The TypeVisitor class traverse the abstract syntax tree and makes sure called functions are being called with the correct amount of arguments, that types of binary operations are compatiable, and so on.
+Semantic analysis is implemented in semanticsvisitor.cpp. The SemanticsVisitor class traverse the abstract syntax tree and makes sure called functions are being called with the correct amount of arguments, that types of binary operations are compatiable, and so on.

@@ -12,7 +12,7 @@ Run the get_depends.sh script to install all the dependencies needed for the com
 
 ### Tested
 The compiler has been tested on a 5.10.16.3-microsoft-standard-WSL2 Linux kernel,
-as well as on Ubuntu 20.04.5 LTS.
+as well as on Ubuntu 20.04.5 LTS, by running the gtests and also compiling some example programs. 
 
 The versions of the tools which were used during testing :
 1. flex 2.6.4
@@ -33,7 +33,7 @@ Afterwards the generated assembly is compiled with gcc, and finally the compiled
 
 `echo $?` can be used in bash after executing the compiled assembly to print the return value returned by the int start() function of the Star source file. Keep in mind that this value ranges from 0 - 255, but can be useful for checking the result of a simple calculation.
 
-Other flags which can be supplied while compiling a program are -ast for printing the abstract syntax tree and -tac for printing the generated three-address code. If the --d flag is omitted, then the generated Assembly is placed in the /asm_out folder. 
+Other flags which can be supplied while compiling a program are -ast for printing the abstract syntax tree and -tac for printing the generated three-address code. If the --d flag is omitted, then the generated Assembly is placed in the /asm_out folder.
 
 
 ### Possible syntax errors

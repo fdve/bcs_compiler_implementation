@@ -6,7 +6,7 @@
 #include "../headers/ast.h"
 #include "../headers/util.h"
 #include "../headers/astvisitor.h"
-#include "../headers/typevisitor.h"
+#include "../headers/semanticsvisitor.h"
 #include "../headers/printvisitor.h"
 #include "../headers/quadgenvisitor.h"
 #include "../headers/desugar.h"
@@ -18,8 +18,8 @@
 ASTNode::~ASTNode(){}
 
 void ASTNode::VisitASTNode(ASTVisitor *visitor) {
-    if(TypeVisitor *typeVisitor = dynamic_cast<TypeVisitor*>(visitor)) {
-        typeVisitor->visit(this);
+    if(SemanticsVisitor *semanticsVisitor = dynamic_cast<SemanticsVisitor*>(visitor)) {
+        semanticsVisitor->visit(this);
     }
     else if(QuadGenVisitor *tacCodeGenVisitor = dynamic_cast<QuadGenVisitor*>(visitor)) {
         tacCodeGenVisitor->visit(this);

@@ -46,7 +46,7 @@ class Program : public ASTNode {
         FuncDecl *start_fnc;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
 };
 
@@ -65,7 +65,7 @@ class FuncDecl : public ASTNode {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
 };
 
@@ -79,7 +79,7 @@ class FuncDeclParam : public ASTNode {
         Identifier *id;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class Scope;
 };
@@ -101,7 +101,7 @@ class FunctionBlock : public Statement {
         stmntList *stmnts;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
 };
 
@@ -117,7 +117,7 @@ class VariableDef : public Statement {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class SymbolTable;
 };
@@ -133,7 +133,7 @@ class Assignment : public Statement {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class Desugar;
 };
@@ -147,7 +147,7 @@ class ExprStmnt : public Statement {
         Expression *expr;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
 };
 
@@ -162,7 +162,7 @@ class ReturnCall : public Statement {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
 };
 
@@ -178,7 +178,7 @@ class CFIf : public Statement {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
 };
 
@@ -195,7 +195,7 @@ class CFFor : public Statement {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class Desugar;
 };
@@ -213,7 +213,7 @@ class CFWhile : public Statement {
 
         friend class Desugar;
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
 };
 
@@ -228,7 +228,7 @@ class CFDoWhile : public Statement {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class Desugar;
 };
@@ -257,7 +257,7 @@ class UnaryOpExpr : public Expression {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class TypeResolution;
 };
@@ -276,7 +276,7 @@ class BitwiseOpExpr : public Expression {
 
         friend class TypeResolution;
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class Desugar;
 };
@@ -295,7 +295,7 @@ class FuncCall : public Expression {
         YYLTYPE *info;
 
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class SymbolTable;
         friend class TypeResolution;
@@ -328,7 +328,7 @@ class Identifier : public Expression {
         friend class Scope;
         friend class TypeResolution;
         friend class PrintVisitor;
-        friend class TypeVisitor;
+        friend class SemanticsVisitor;
         friend class QuadGenVisitor;
         friend class SymbolTable;
 };

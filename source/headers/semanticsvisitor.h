@@ -1,8 +1,7 @@
 class ASTVisitor;
 
-/* Type visitor class which annotates nodes with correct types, and checks
- * type compatibility. */
-class TypeVisitor : public ASTVisitor {
+/* Semantic analysis visitor class. */
+class SemanticsVisitor : public ASTVisitor {
     public:
         void visit(ASTNode *node);
         void visit(Program *node);

@@ -104,6 +104,10 @@ ErrLog::ErrMsg ErrLog::IllegitimateChar(YYLTYPE *info, std::string value) {
     return ErrMsg(info, "illegitimate char declaration.\n");
 }
 
+ErrLog::ErrMsg ErrLog::InvalidNegOpType(YYLTYPE *info, std::string type) {
+    return ErrMsg(info, "unary operator - expressions type is of type " + type + ", only int and float allowed.\n");
+}
+
 ErrLog::ErrMsg ErrLog::IncompatibleTypes(YYLTYPE *info, std::string nodeName, std::string name, std::string type1, std::string type2) {
     if(nodeName == "return") {
         return ReturnError(info, name, type1, type2);

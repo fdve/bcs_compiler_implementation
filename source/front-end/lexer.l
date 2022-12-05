@@ -13,7 +13,7 @@
     int yycolumn = 1;
     int yyloc_first_col_cpy = 1;
 
-    /* -[] add better description book From the bison book. */
+    /* Store the source file location of tokens. */
     #define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno; \
                            yylloc.first_column = yycolumn; \
                            yyloc_first_col_cpy = yycolumn; \
@@ -34,7 +34,7 @@
     }
 %}
 
-/* Compilation errors occur if you compile flex and bison files together, and in 
+/* Compilation errors occur if you compile flex and bison files together, and in
  * the corresponding bison file you do not explicitly declare tokens you return here. */
 
 %option noyywrap yylineno nounput

@@ -93,9 +93,9 @@ void TypeResolution::annotateUnaryOp(UnaryOpExpr *node) {
     else if(node->unaryOp == '-') {
         std::string exprType = node->expr->getType();
 
-        /* - [] add error logger error here? */
-        if(exprType == "char") {
-            cout_str("error : unary operator expression is of type (char). Only int, float and bool are allowed.");
+        /* Only allowed to apply the unary operator - to types int and float. */
+        if(exprType == "char" || exprType == "bool") {
+            ErrLog::InsertMsg(ErrLog::InvalidNegOpType(node->info, exprType));
         }
 
         node->type = exprType;

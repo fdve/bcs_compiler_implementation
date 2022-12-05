@@ -155,7 +155,7 @@ void QuadGenVisitor::visit(Statement *stmnt) {
         else {
             quadArg arg1;
             arg1.label = "void";
-            QuadInstruc instr = QuadInstruc(quadOpType::ireturn, quadArg{}, quadArg{}, quadArg{});
+            QuadInstruc instr = QuadInstruc(quadOpType::ireturn, arg1, quadArg{}, quadArg{});
             Quad::QuadInstrucs.push_back(instr);
         }
     }

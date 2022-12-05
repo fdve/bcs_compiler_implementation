@@ -50,7 +50,7 @@ enum quadOpType : int {
 enum quadArgType : int {
     empty,          // empty field
     variable,       // a source program name or compiler temporary
-    intConst,       // - [] merge constants into 1 const?
+    intConst,      
     charConst,
     floatConst,
     boolConst,

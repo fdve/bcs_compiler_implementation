@@ -1,28 +1,22 @@
-/* - [] change name to semantic analyzer visitor? */
-
-/* Traverse a provided AST. Mainly check that types in expressions and statement are compatible
- * (e.g. checking that int a = b, b is of type int). There is no type promotion present
- * (e.g. in the case of float a = 1, 1 is promoted to a float).
- *
- * Also perform some semantic checks, e.g. check that no more than 6 parameters are given
- * when declaring a function. */
+/* Performs semantic analysis. e.g. check that no more than 6 parameters are given
+ * when declaring a function, that binary operations have type comptiable operands, etc. */
 
 #include "../headers/util.h"
 #include "../headers/ast.h"
 #include "../headers/astvisitor.h"
-#include "../headers/typevisitor.h"
+#include "../headers/semanticsvisitor.h"
 #include "../headers/typeresolution.h"
 #include "../headers/symboltable.h"
 #include "../headers/scope.h"
 #include "../headers/errorlogger.h"
 #include "../headers/parser.hpp"
 
-void TypeVisitor::visit(ASTNode *node) {
+void SemanticsVisitor::visit(ASTNode *node) {
     check_nullptr_throws(dynamic_cast<Program*>(node), "Program_node");
     visit(dynamic_cast<Program*>(node));
 }
 
-void TypeVisitor::visit(Program *node) {
+void SemanticsVisitor::visit(Program *node) {
     Program *progNode = dynamic_cast<Program*>(node);
 
     for(FuncDecl *funcDec : *progNode->lhs) {
@@ -36,7 +30,7 @@ void TypeVisitor::visit(Program *node) {
     }
 }
 
-void TypeVisitor::visit(FuncDecl *funcDec) {
+void SemanticsVisitor::visit(FuncDecl *funcDec) {
     if(funcDec->id == nullptr) {
         return;
     }
@@ -54,7 +48,7 @@ void TypeVisitor::visit(FuncDecl *funcDec) {
 }
 
 /* Do not have to try to visit do While nodes since do While nodes get desugared into while loops. */
-void TypeVisitor::visit(Statement *stmnt) {
+void SemanticsVisitor::visit(Statement *stmnt) {
     if(FunctionBlock *funcBlock = dynamic_cast<FunctionBlock*>(stmnt)) {
         for(Statement *statement : *funcBlock->stmnts) {
             visit(statement);
@@ -82,13 +76,16 @@ void TypeVisitor::visit(Statement *stmnt) {
         visit(exprStmnt->expr);
     }
     else if(ReturnCall *returnCall = dynamic_cast<ReturnCall*>(stmnt)) {
-        TypeResolution::annotateExpr(returnCall->expr);
-        visit(returnCall->expr);
+        /* Only need to visit and annotate the return call expression if there is one.*/
+        if(returnCall->expr != nullptr) {
+            TypeResolution::annotateExpr(returnCall->expr);
+            visit(returnCall->expr);
+        }
 
         /* The id of a return call node is the funcs id the call returns to. */
         symTableEntry *entry = returnCall->id->entryRef;
         if(entry == nullptr) {
-            EntryNullPtrMsg("TypeVisitor : returnCallNode", returnCall->id->name);
+            EntryNullPtrMsg("SemanticsVisitor : returnCallNode", returnCall->id->name);
             return;
         }
 
@@ -147,7 +144,7 @@ void TypeVisitor::visit(Statement *stmnt) {
     }
 }
 
-void TypeVisitor::visit(Expression *expr) {
+void SemanticsVisitor::visit(Expression *expr) {
     if(UnaryOpExpr *unaryOp = dynamic_cast<UnaryOpExpr*>(expr)) {
         TypeResolution::annotateExpr(unaryOp);
 

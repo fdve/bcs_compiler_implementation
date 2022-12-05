@@ -1,5 +1,5 @@
 /* Google test file, where tests are run on the different compiler phases.
- * For now and due to time constrains, only the back-end and the front-end
+ * For now only the back-end and the front-end
  * have been tested.
  *
  * The front-end tests test various aspect of the front-end of the compiler,
@@ -54,7 +54,6 @@ TEST(FrontEndTests, ParserTest2) {
 }
 
 /* Out of scope variables and redefining variables. */
-/* -[] this one is incomplete atm*/
 TEST(FrontEndTests, ScopeTest1) {
 	ErrLog::Reset();
 	InitFlex();

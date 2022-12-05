@@ -34,6 +34,7 @@ class ErrLog {
         static ErrMsg UndefinedVar(YYLTYPE *info, std::string var);
         static ErrMsg RedefineVar(YYLTYPE *info, std::string var);
         static ErrMsg IllegitimateChar(YYLTYPE *info, std::string value);
+        static ErrMsg InvalidNegOpType(YYLTYPE *info, std::string type);
         static ErrMsg IncompatibleTypes(YYLTYPE *info, std::string nodeName, std::string name, std::string type1, std::string type2);
         static ErrMsg IncompatibleTypesBinOps(YYLTYPE *info, std::string binop, std::string type1, std::string type2);
         static ErrMsg NonVoidFncNoReturn(YYLTYPE *info, std::string funcName);

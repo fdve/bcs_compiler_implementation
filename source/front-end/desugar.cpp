@@ -28,7 +28,6 @@ void Desugar::DesugarAssignModifier(Assignment *assignNode, Expression *lExpr, s
     BitwiseOpExpr *binOpExpr = new BitwiseOpExpr(lExpr, std::string(1, op.at(0)), rExpr, info);
 
     /* Annotate the left expression of the binary operation with its type. */
-    // TypeVisitor typeVisitor;
     TypeResolution::annotateExpr(binOpExpr->lExpr);
     assignNode->assignOp = "=";
     assignNode->expr = binOpExpr;

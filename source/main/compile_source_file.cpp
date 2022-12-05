@@ -6,7 +6,7 @@
 #include "../headers/main.h"
 #include "../headers/symboltable.h"
 #include "../headers/astvisitor.h"
-#include "../headers/typevisitor.h"
+#include "../headers/semanticsvisitor.h"
 #include "../headers/printvisitor.h"
 #include "../headers/quadgenvisitor.h"
 #include "../headers/util.h"
@@ -71,7 +71,7 @@ int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFla
     }
 
     PrintVisitor astPrintVisitor;
-    TypeVisitor astTypeVisitor;
+    SemanticsVisitor astSemanticsVisitor;
     QuadGenVisitor quadGenVisitor;
 
     /* If ast flag provided, print the tree. */
@@ -84,7 +84,7 @@ int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFla
     /* Print all the scopes. */
     // Scope::PrintScopes(Scope::globalScope, 0);
 
-    ASTRoot->VisitASTNode(&astTypeVisitor);
+    ASTRoot->VisitASTNode(&astSemanticsVisitor);
 
     /* Checking whether there have been any errors during the processing
     *  of the source file so far. If there are, or the compilation flag has been
