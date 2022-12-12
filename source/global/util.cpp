@@ -48,6 +48,14 @@ std::string spaced_str(int spaces) {
     return std::string(spaces, ' ');
 }
 
+std::string repeat_str(std::string str, int n) {
+    std::stringstream ss;
+    for(int i = 0; i < n; i++) {
+        ss << str;
+    }
+    return ss.str();
+}
+
 /* Shorthand for couting a string message. */
 void cout_str(std::string msg) {
     std::cout << msg << std::endl;

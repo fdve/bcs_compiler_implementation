@@ -12,7 +12,7 @@ Run the get_depends.sh script to install all the dependencies needed for the com
 
 ### Tested
 The compiler has been tested on a 5.10.16.3-microsoft-standard-WSL2 Linux kernel,
-as well as on Ubuntu 20.04.5 LTS, by running the gtests and also compiling some example programs. 
+as well as on Ubuntu 20.04.5 LTS, by running the gtests and also compiling some example programs.
 
 The versions of the tools which were used during testing :
 1. flex 2.6.4
@@ -37,7 +37,7 @@ Other flags which can be supplied while compiling a program are -ast for printin
 
 
 ### Possible syntax errors
-Keep in mind that all the Star language control flow statements begin with an uppercase character. Also, incrementing a variable like i++ is not currently supported by the compiler, therefore use i += 1 instead.
+All the Star language control flow statements begin with an uppercase character. Also, incrementing a variable like i++ is not currently supported by the compiler, therefore use i += 1 instead.
 
 ### Running the test framework
 The test framework can be running the following command:   

@@ -12,7 +12,10 @@
 #include "../headers/parser.hpp"
 
 void SemanticsVisitor::visit(ASTNode *node) {
-    check_nullptr_throws(dynamic_cast<Program*>(node), "Program_node");
+    if(dynamic_cast<Program*>(node) == nullptr) {
+        std::cout << "error : no program node found, gave empty file?" << std::endl;
+        exit(EXIT_FAILURE);
+    }
     visit(dynamic_cast<Program*>(node));
 }
 

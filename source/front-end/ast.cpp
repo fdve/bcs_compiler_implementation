@@ -25,7 +25,7 @@ void ASTNode::VisitASTNode(ASTVisitor *visitor) {
         tacCodeGenVisitor->visit(this);
     }
     else if(PrintVisitor *printVisitor = dynamic_cast<PrintVisitor*>(visitor)) {
-        printVisitor->visit(this, 0);
+        printVisitor->visit(this);
     }
     else {
         cout_str("error : unrecognized visitor class in VisitASTNode(...)");

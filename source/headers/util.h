@@ -41,6 +41,8 @@ void cout_str(std::string msg);
 
 std::string spaced_str(int spaces);
 
+std::string repeat_str(std::string str, int n);
+
 bool checkCorrectFileExt(std::string fileName);
 
 compFlags ParseCmmndLineArgs(int argc, char *argv[]);

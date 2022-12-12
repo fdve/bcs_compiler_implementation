@@ -2,7 +2,7 @@ The test framework makes use of the GoogleTest framework https://github.com/goog
 
 The input tests are located in the /test_files/front-end and /test_files/back-end subdirectory (there is currently no middle-end testing).
 
-gtest_main.cpp is where the tests are called and executed. 
+gtest_main.cpp is where the tests are called and executed.
 
 ### Front-end testing
 Front-end testing works by  
@@ -19,3 +19,6 @@ Following, in gtest_main.cpp the gtests are compiled together with the generated
 The generated Assembly files are put in the /test_files/gen_asm_files directory. The mandatory start() method from the Star source file gets translated to a test_x function label, with a .globl prefix so that the function will be accessible from outside the file and can be found by the gtest to execute.
 
 For generated Assembly files which return a float value, the source Star file contains a seperate test method which returns the float value. The .globl directive will be followed by the name of the seperate test method so that the function can be called and tested from the gtestm.
+
+### Other
+The `test_ast_prettyprint` folder contains some programs which were used for testing the pretty printing of abstract syntax trees.

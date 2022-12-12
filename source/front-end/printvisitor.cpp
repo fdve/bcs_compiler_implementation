@@ -1,24 +1,24 @@
 /* A basic visitor which traverses the AST, and depending on what kind of node
 * it visits, it will print information about that node.
-* Mainly used for debugging purposes. */
+* Uses PrettyTree class for pretty printing the AST. */
+
+#include <utility>
 
 #include "../headers/util.h"
 #include "../headers/symboltable.h"
 #include "../headers/ast.h"
 #include "../headers/astvisitor.h"
 #include "../headers/printvisitor.h"
+#include "../headers/prettytree.h"
 
-
-/* The amount of extra spaces the visitor will print depending on current tree height. */
-#define DEPTH_INCR 3
 
 void PrintVisitorError(std::string nodetype) {
     std::cout << "error : incorrect node type for " << nodetype << " in PrintVisitor" << std::endl;
 }
 
-void PrintVisitor::visit(ASTNode *node, int depth) {
+void PrintVisitor::visit(ASTNode *node) {
     if(dynamic_cast<Program*>(node)) {
-        visit(dynamic_cast<Program*>(node), 0);
+        visit(dynamic_cast<Program*>(node));
     }
     else {
         PrintVisitorError("ASTNode");
@@ -26,111 +26,163 @@ void PrintVisitor::visit(ASTNode *node, int depth) {
 }
 
 /* Print visitor implementation. */
-void PrintVisitor::visit(Program *node, int depth) {
+void PrintVisitor::visit(Program *node) {
+    /* Initialize PrettyTree. */
+    PrettyTree::InitPrettyTree();
+
     Program *progNode = dynamic_cast<Program*>(node);
+    std::cout << "Program" << std::endl;
 
-    std::cout << "Program Node, root node of AST" << std::endl;
+    for(FuncDecl *funcDec : *progNode->lhs) {
+        visit(funcDec);
+    }
 
-    for(FuncDecl *funcDec : *progNode->lhs) { visit(funcDec, DEPTH_INCR); }
-    visit(progNode->start_fnc, DEPTH_INCR);
-    for(FuncDecl *funcDec : *progNode->rhs) { visit(funcDec, DEPTH_INCR); }
+    PrettyTree::lastFuncDec = progNode->rhs->size() != 0 ? false : true;
+    visit(progNode->start_fnc);
+
+    for(FuncDecl *funcDec : *progNode->rhs) {
+        if(funcDec == progNode->rhs->back()) {
+            PrettyTree::lastFuncDec = true;
+            visit(funcDec);
+        }
+        else {
+            visit(funcDec);
+        }
+    }
 }
 
-void PrintVisitor::visit(FuncDecl *funcDec, int depth) {
+void PrintVisitor::visit(FuncDecl *funcDec) {
     if(!funcDec->id) {
-        std::cout << spaced_str(depth) << "FuncDecl id is nullptr, return." << std::endl;
+        std::cout << "FuncDecl id is nullptr, return." << std::endl;
         return;
     }
 
-    std::cout << spaced_str(depth) << "FuncDec type:" << funcDec->type << " id:" << funcDec->id->name << std::endl;
+    std::cout << PrettyTree::FncDecBranches() << "FuncDec returnT:" << funcDec->type << " id:" << funcDec->id->name;
 
-    if(!funcDec->paramList) {
-        std::cout << spaced_str(depth) << "paramList is nullptr of funcDec " << funcDec->id->name << std::endl;
-    }
-    else {
+    if(funcDec->paramList) {
+        std::cout << " Params: ";
         for(FuncDeclParam *funcDeclParam : *funcDec->paramList) {
-            visit(funcDeclParam, depth + DEPTH_INCR);
+            std::cout << funcDeclParam->type << " " << funcDeclParam->id->name;
+            if(funcDeclParam != funcDec->paramList->back()) {
+                std::cout << ", ";
+            }
         }
     }
+    std::cout << std::endl;
 
     for(Statement *statement : *funcDec->fncBlock) {
-        visit(statement, depth + DEPTH_INCR);
+        PrettyTree::lastRootStmnt = statement == funcDec->fncBlock->back() ? true : false;
+        PrettyTree::lastNestedStmnts.clear();
+        visit(statement);
     }
 }
 
-void PrintVisitor::visit(FuncDeclParam *funcDeclParam, int depth) {
-    std::cout << spaced_str(depth) << "FncDecParam type " << funcDeclParam->type << " id " << funcDeclParam->id->name << std::endl;
-}
-
-void PrintVisitor::visit(Statement *stmnt, int depth) {
+/* Deal with nested statements */
+void PrintVisitor::visit(Statement *stmnt) {
     if(FunctionBlock *funcBlock = dynamic_cast<FunctionBlock*>(stmnt)) {
         for(Statement *statement : *funcBlock->stmnts) {
-            visit(statement, depth + DEPTH_INCR);
+            visit(statement);
         }
     }
     else if(VariableDef *temp = dynamic_cast<VariableDef*>(stmnt)) {
-        std::cout << spaced_str(depth) << "VarDef type:" << temp->type << " id:" << temp->id->name << std::endl;
-        visit(temp->expr, depth + DEPTH_INCR);
+        std::cout << PrettyTree::AllStmntBranches() << "VarDef declT:" << temp->type << " id:" << temp->id->name << std::endl;
+        visit(temp->expr);
     }
     else if(Assignment *assign = dynamic_cast<Assignment*>(stmnt)) {
-        std::cout << spaced_str(depth) << "Assignment id:" << assign->id->name << " op:" << assign->assignOp << std::endl;
-        visit(assign->expr, depth + DEPTH_INCR);
+        std::cout << PrettyTree::AllStmntBranches() <<  "Assignment id:" << assign->id->name << " op:" << assign->assignOp << std::endl;
+        visit(assign->expr);
     }
     else if(ExprStmnt *exprStmnt = dynamic_cast<ExprStmnt*>(stmnt)) {
-        std::cout << spaced_str(depth) << "exprStmnt" << std::endl;
-        visit(exprStmnt->expr, depth + DEPTH_INCR);
+        std::cout << PrettyTree::AllStmntBranches() << "ExprStmnt" << std::endl;
+        visit(exprStmnt->expr);
     }
     else if(ReturnCall *returnCall = dynamic_cast<ReturnCall*>(stmnt)) {
-        if(returnCall->expr == nullptr) {
-            std::cout << spaced_str(depth) << "ReturnCall statement : empty" << std::endl;
-        }
-        else {
-            std::cout << spaced_str(depth) << "ReturnCall statement : not empty" << std::endl;
-            visit(returnCall->expr, depth + DEPTH_INCR);
+        std::cout << PrettyTree::AllStmntBranches() << "ReturnCall" << std::endl;
+        if(returnCall->expr) {
+            visit(returnCall->expr);
         }
     }
     else if(CFIf *cfIf = dynamic_cast<CFIf*>(stmnt)) {
-        std::cout << spaced_str(depth) << "IfStmnt" << std::endl;
-        visit(cfIf->expr, depth = DEPTH_INCR);
+        std::cout << PrettyTree::AllStmntBranches() << "If" << std::endl;
+
+        bool noIfStmnts = !cfIf->ifStmnts || cfIf->ifStmnts->size() == 0 ? true : false;
+        bool noElseStmnts = !cfIf->elseStmnts || cfIf->elseStmnts->size() == 0 ? true : false;
+        PrettyTree::noStmntsCF = noIfStmnts && noElseStmnts ? true : false;
+
+        PrettyTree::visitCFCond = true;
+        visit(cfIf->expr);
+        PrettyTree::visitCFCond = false;
+
         if(!check_nullptr(cfIf->ifStmnts, "cfIf->ifStmns")) {
+            PrettyTree::lastNestedStmnts.push_back(false);
+
             for(Statement *stmnt : *cfIf->ifStmnts) {
-                visit(stmnt, depth + DEPTH_INCR);
+                PrettyTree::lastDepthStmnt = stmnt == cfIf->ifStmnts->back() && noElseStmnts? true : false;
+                PrettyTree::lastNestedStmnts.at(PrettyTree::lastNestedStmnts.size() - 1) = PrettyTree::lastDepthStmnt;
+                visit(stmnt);
             }
+            PrettyTree::lastNestedStmnts.pop_back();
         }
+
         if(cfIf->elseStmnts != nullptr){
+            PrettyTree::lastNestedStmnts.push_back(false);
+
             for(Statement *stmnt : *cfIf->elseStmnts) {
-                visit(stmnt, depth + DEPTH_INCR);
+                PrettyTree::lastDepthStmnt = stmnt == cfIf->elseStmnts->back() ? true : false;
+                PrettyTree::lastNestedStmnts.at(PrettyTree::lastNestedStmnts.size() - 1) = PrettyTree::lastDepthStmnt;
+                visit(stmnt);
             }
+            PrettyTree::lastNestedStmnts.pop_back();
         }
     }
     else if(CFFor *cfFor = dynamic_cast<CFFor*>(stmnt)) {
-        std::cout << spaced_str(depth) << "ForStmnt" << std::endl;
+        /* Since we now print the AST after the semantic analyis,
+         * this code has become redundant and outdated, since all for statements
+         * are desugared into while statements, as well as that this code
+         * does not employ the new pretty print but employs the old printing.  */
 
-        if(!check_nullptr(cfFor->varDef, "cfFor varDef")) { visit(cfFor->varDef, depth + DEPTH_INCR); }
-        if(!check_nullptr(cfFor->m_expr, "cfFor m_expr")) { visit(cfFor->m_expr, depth + DEPTH_INCR); }
-        if(!check_nullptr(cfFor->assign, "cfFor assign")) { visit(cfFor->assign, depth + DEPTH_INCR); }
+        std::cout << PrettyTree::AllStmntBranches() << "For" << std::endl;
+
+        if(!check_nullptr(cfFor->varDef, "cfFor varDef")) { visit(cfFor->varDef); }
+        if(!check_nullptr(cfFor->m_expr, "cfFor m_expr")) { visit(cfFor->m_expr); }
+        if(!check_nullptr(cfFor->assign, "cfFor assign")) { visit(cfFor->assign); }
 
         if(!check_nullptr(cfFor->stmnts, "cfFor->stmnts")){
-            std::cout << spaced_str(depth) << "For loop body stmnts:" << std::endl;
             for(Statement *stmnt : *cfFor->stmnts) {
-                visit(stmnt, depth + DEPTH_INCR);
+                visit(stmnt);
             }
         }
     }
     else if(CFWhile *cfWhile = dynamic_cast<CFWhile*>(stmnt)) {
-        std::cout << spaced_str(depth) << "WhileStmnt" << std::endl;
-        visit(cfWhile->expr, depth + DEPTH_INCR);
+        std::cout << PrettyTree::AllStmntBranches() << "While" << std::endl;
+
+        bool noStatements = !cfWhile->stmnts || cfWhile->stmnts->size() == 0 ? true : false;
+        PrettyTree::noStmntsCF = noStatements ? true : false;
+
+        PrettyTree::visitCFCond = true;
+        visit(cfWhile->expr);
+        PrettyTree::visitCFCond = false;
+
+        PrettyTree::lastNestedStmnts.push_back(false);
 
         for(Statement *stmnt : *cfWhile->stmnts) {
-            visit(stmnt, depth + DEPTH_INCR);
+            PrettyTree::lastDepthStmnt = stmnt == cfWhile->stmnts->back() ? true : false;
+            PrettyTree::lastNestedStmnts.at(PrettyTree::lastNestedStmnts.size() - 1) = PrettyTree::lastDepthStmnt;
+            visit(stmnt);
         }
+        PrettyTree::lastNestedStmnts.pop_back();
     }
     else if(CFDoWhile *cfDoWhile = dynamic_cast<CFDoWhile*>(stmnt)) {
-        std::cout << spaced_str(depth) << "DoWhileStmnt" << std::endl;
-        visit(cfDoWhile->expr, depth + DEPTH_INCR);
+        /* Since we now print the AST after the semantic analyis,
+         * this code has become redundant and outdated, since all do while statements
+         * are desugared into while statements, as well as that this code
+         * does not employ the new pretty print but employs the old printing.  */
+
+        std::cout << PrettyTree::AllStmntBranches() << "DoWhile" << std::endl;
+        visit(cfDoWhile->expr);
 
         for(Statement *stmnt : *cfDoWhile->stmnts) {
-            visit(stmnt, depth + DEPTH_INCR);
+            visit(stmnt);
         }
     }
     else {
@@ -138,41 +190,61 @@ void PrintVisitor::visit(Statement *stmnt, int depth) {
     }
 }
 
-void PrintVisitor::visit(Expression *expr, int depth) {
-    std::cout << spaced_str(depth) << "EXPR TYPE :" << expr->getType() << std::endl;
+
+void PrintVisitor::visit(Expression *expr) {
+    /* Output the type of the expression. */
+    std::string t = " t:";
+    if(expr != nullptr) {
+        t += expr->getType();
+    }
 
     if(UnaryOpExpr *unaryOpExpr = dynamic_cast<UnaryOpExpr*>(expr)) {
-        std::cout << spaced_str(depth) << "unaryOpExpr un_op:" << unaryOpExpr->unaryOp << std::endl;
-        visit(unaryOpExpr->expr, depth + DEPTH_INCR);
+        std::cout << PrettyTree::AllExprBranches(expr) << "UnaryOp op:" << unaryOpExpr->unaryOp << t << std::endl;
+
+        PrettyTree::currExprRSubtree.push_back(false);
+        visit(unaryOpExpr->expr);
+        PrettyTree::currExprRSubtree.pop_back();
     }
     else if(BitwiseOpExpr *binOpExpr = dynamic_cast<BitwiseOpExpr*>(expr)) {
-        visit(binOpExpr->lExpr, depth + DEPTH_INCR);
-        std::cout << spaced_str(depth) << "binOpExpr binOp:" << binOpExpr->binOp << std::endl;
-        visit(binOpExpr->rExpr, depth + DEPTH_INCR);
+        PrettyTree::currExprRSubtree.push_back(true);
+        visit(binOpExpr->rExpr);
+        PrettyTree::currExprRSubtree.pop_back();
+
+        std::cout << PrettyTree::AllExprBranches(expr) << "BinOp op:" << binOpExpr->binOp << t << std::endl;
+
+        PrettyTree::currExprRSubtree.push_back(false);
+        visit(binOpExpr->lExpr);
+        PrettyTree::currExprRSubtree.pop_back();
     }
     else if(FuncCall *funcCall = dynamic_cast<FuncCall*>(expr)) {
-        std::cout << spaced_str(depth) << "Funccall id:" << funcCall->id->name << std::endl;
-        if(check_nullptr(funcCall->params, "funcCall params"))
-            return;
+        std::cout << PrettyTree::AllExprBranches(expr) << "FuncCall id:" << funcCall->id->name << t << std::endl;
+        if(funcCall->params != nullptr) {
+            for(Expression *expr : *funcCall->params) {
+                PrettyTree::lastFncCallArg = expr == funcCall->params->back();
+                PrettyTree::inFncCallArgExpr = true;
 
-        for(Expression *expr : *funcCall->params) {
-            visit(expr, depth + DEPTH_INCR);
+                PrettyTree::currExprRSubtree.push_back(false);
+                visit(expr);
+                PrettyTree::currExprRSubtree.pop_back();
+            }
+            PrettyTree::lastFncCallArg = false;
+            PrettyTree::inFncCallArgExpr = false;
         }
     }
     else if(Identifier *identifier = dynamic_cast<Identifier*>(expr)) {
-        std::cout << spaced_str(depth) << "Identifier name:" << identifier->name << std::endl;
+        std::cout <<  PrettyTree::AllExprBranches(expr) << "Identifier name:" << identifier->name << t << std::endl;
     }
     else if(IntConst *constant = dynamic_cast<IntConst*>(expr)) {
-        std::cout << spaced_str(depth) << "IntConst value:" << constant->value << std::endl;
+        std::cout <<  PrettyTree::AllExprBranches(expr) << "IntConst val:" << constant->value << t << std::endl;
     }
     else if(FloatConst *constant = dynamic_cast<FloatConst*>(expr)) {
-        std::cout << spaced_str(depth) << "FloatConst value:" << constant->value << std::endl;
+        std::cout << PrettyTree::AllExprBranches(expr) << "FloatConst val:" << constant->value << t << std::endl;
     }
     else if(BoolConst *constant = dynamic_cast<BoolConst*>(expr)) {
-        std::cout << spaced_str(depth) << "BoolConst value:" << constant->value << std::endl;
+        std::cout << PrettyTree::AllExprBranches(expr) << "BoolConst val:" << constant->value << t << std::endl;
     }
     else if(CharConst *constant = dynamic_cast<CharConst*>(expr)) {
-        std::cout << spaced_str(depth) << "CharConst value:" << constant->value << " type: " << constant->type << std::endl;
+        std::cout << PrettyTree::AllExprBranches(expr) << "CharConst val:" << constant->value << t << std::endl;
     }
     else if(expr == nullptr) {
         cout_str("error : printvisitor, visit, expr is nullptr");

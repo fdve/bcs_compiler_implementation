@@ -74,13 +74,6 @@ int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFla
     SemanticsVisitor astSemanticsVisitor;
     QuadGenVisitor quadGenVisitor;
 
-    /* If ast flag provided, print the tree. */
-    if(flags.printAst) {
-        cout_str("\n|-------- PRINTING THE ABSTRACT SYNTAX TREE --------|");
-        ASTRoot->VisitASTNode(&astPrintVisitor);
-        cout_str("|--------------------------------------------------|\n");
-    }
-
     /* Print all the scopes. */
     // Scope::PrintScopes(Scope::globalScope, 0);
 
@@ -97,15 +90,22 @@ int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFla
         return 0;
     }
 
+    /* If ast flag provided, print the tree. */
+    if(flags.printAst) {
+        cout_str("\n|-------------- PRINTING THE ABSTRACT SYNTAX TREE --------------|");
+        ASTRoot->VisitASTNode(&astPrintVisitor);
+        cout_str("|--------------------------------------------------------------|\n");
+    }
+
     /* Visit the AST and generate TAC while traversing it. The generated Quads
      * will be stored in the Quad class static field Quad::QuadInstrucs. */
     ASTRoot->VisitASTNode(&quadGenVisitor);
 
     /* If tac flag provided, print out the generated three-address code. */
     if(flags.printTac) {
-        cout_str("\n|--------- PRINTING THE THEE-ADDRESS CODE ---------|");
+        cout_str("\n|--------------- PRINTING THE THEE-ADDRESS CODE ---------------|");
         Quad::PrintQuadInstrucs(Quad::QuadInstrucs);
-        cout_str("|---------------------------------------------------|\n");
+        cout_str("|--------------------------------------------------------------|\n");
     }
 
     if(ErrLog::errorMsgs.size() != 0) {
