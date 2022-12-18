@@ -52,13 +52,20 @@ std::string PrettyTree::ExprRoots() {
 /* Return branches of nested statements. */
 std::string PrettyTree::NestedStmntBranches() {
     std::string nestedBranches = "";
+
+    /* For every nested statement, check whether they are the last
+     * statement in the list of statements they reside in, and
+     * if so print either splitting or no branch, depending on
+     * whether it is the last nested statement.
+     * If not last nested statement, print splitting branch or
+     * continueing branch depending on whehther the current
+     * statement is the most nested statement. */
     for(size_t i = 0; i < lastNestedStmnts.size(); i++) {
         if(lastNestedStmnts.at(i)) {
             if(i == lastNestedStmnts.size() - 1) {
                 nestedBranches += "└─ ";
                 break;
             }
-            // nestedBranches += "   ";
             nestedBranches += "   ";
         }
         else {
@@ -66,7 +73,6 @@ std::string PrettyTree::NestedStmntBranches() {
                 nestedBranches += "├─ ";
                 break;
             }
-            //nestedBranches += "   ";
             nestedBranches += "│  ";
         }
     }

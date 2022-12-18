@@ -77,8 +77,6 @@
 
 /* Associativity and precedence rules for the tokens and rules.
  * Precendence is higher for rules later declared, i.e. on higher line numbers. */
-%right DEC_FUNC_PREC
-%left DEC_FUNC_PREC2
 %left OR_OPERATOR
 %left AND_OPERATOR
 %left EQUALITY_OPERATOR
@@ -109,7 +107,7 @@ PROGRAM :
     {
         Scope::PushScope();
     }
-    DEC_FUNCS START_FUNCTION DEC_FUNCS  %prec DEC_FUNC_PREC2
+    DEC_FUNCS START_FUNCTION DEC_FUNCS
     {
         ASTRoot = new Program($2, $3, $4);
         Scope::PopScope();
@@ -134,7 +132,7 @@ DEC_FUNCS :
     {
         $$ = new FuncDeclList();
     }
-    | DEC_FUNCS DEC_FUNC                                    %prec DEC_FUNC_PREC2
+    | DEC_FUNCS DEC_FUNC
     {
         $$->push_back($2);
     }
@@ -146,7 +144,7 @@ DEC_FUNC :
         Scope::PushScope();
         currentFunc = *$2;
     }
-    LPARENT DEC_FUNC_CALL_PARAMS RPARENT FUNCTION_BLOCK     %prec DEC_FUNC_PREC2
+    LPARENT DEC_FUNC_CALL_PARAMS RPARENT FUNCTION_BLOCK
     {
         Identifier *idNode = new Identifier(*$1, *$2, Scope::GetSymbol(*$2));
         $$ = new FuncDecl(*$1, idNode, $5, dynamic_cast<FunctionBlock *>($7)->GetStmnts(), &@1);

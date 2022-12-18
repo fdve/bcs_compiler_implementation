@@ -74,9 +74,6 @@ int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFla
     SemanticsVisitor astSemanticsVisitor;
     QuadGenVisitor quadGenVisitor;
 
-    /* Print all the scopes. */
-    // Scope::PrintScopes(Scope::globalScope, 0);
-
     ASTRoot->VisitASTNode(&astSemanticsVisitor);
 
     /* Checking whether there have been any errors during the processing
@@ -112,7 +109,7 @@ int CompileSourceFile(int argc, std::string inputFile, int compilePhase, compFla
         ErrLog::PrintErrors();
         return 1;
     }
-    else if(compilePhase == CompilePhase::front) {
+    else if(compilePhase == CompilePhase::middle) {
         return 0;
     }
 

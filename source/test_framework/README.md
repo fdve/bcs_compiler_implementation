@@ -21,4 +21,4 @@ The generated Assembly files are put in the /test_files/gen_asm_files directory.
 For generated Assembly files which return a float value, the source Star file contains a seperate test method which returns the float value. The .globl directive will be followed by the name of the seperate test method so that the function can be called and tested from the gtestm.
 
 ### Other
-The `test_ast_prettyprint` folder contains some programs which were used for testing the pretty printing of abstract syntax trees.
+The `test_ast_prettyprint` folder contains some Star source programs which were used for testing the pretty printing of abstract syntax trees.
