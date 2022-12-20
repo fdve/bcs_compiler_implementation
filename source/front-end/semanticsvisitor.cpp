@@ -76,6 +76,8 @@ void SemanticsVisitor::visit(Statement *stmnt) {
         visit(assign->expr);
     }
     else if(ExprStmnt *exprStmnt = dynamic_cast<ExprStmnt*>(stmnt)) {
+        TypeResolution::annotateExpr(exprStmnt->expr);
+
         visit(exprStmnt->expr);
     }
     else if(ReturnCall *returnCall = dynamic_cast<ReturnCall*>(stmnt)) {
