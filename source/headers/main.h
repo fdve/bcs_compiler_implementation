@@ -7,6 +7,7 @@ struct compFlags {
     bool customFileDest = 0;
     bool printAst = 0;
     bool printTac = 0;
+    bool helpFlag = 0;
 };
 
 int parse_file(const char *filePath);

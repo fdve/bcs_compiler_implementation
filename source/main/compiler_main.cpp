@@ -24,14 +24,19 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    if(argc == 2) {
+    compFlags flags = ParseCmmndLineArgs(argc, argv);
+
+    if(argc == 2 && !flags.helpFlag) {
         CompileSourceFile(argc, (std::string)argv[1], CompilePhase::all);
     }
     else {
-        compFlags flags = ParseCmmndLineArgs(argc, argv);
         if(flags.invalidFlag) {
             cout_str(cmmndLineArgsUsage);
             return 1;
+        }
+        else if(flags.helpFlag) {
+            cout_str(cmmndLineArgsUsage);
+            return 0;
         }
         else {
             CompileSourceFile(argc, (std::string)argv[1], CompilePhase::all, flags);

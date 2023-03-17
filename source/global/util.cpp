@@ -74,8 +74,17 @@ bool checkCorrectFileExt(std::string fileName) {
 compFlags ParseCmmndLineArgs(int argc, char *argv[]) {
     compFlags flags;
 
-    for(int i = 2; i < argc; i++) {
+    for(int i = 1; i < argc; i++) {
         std::string argvStr = std::string(argv[i]);
+
+        /* Check whether the help flag is provided. */
+        if(i == 1) {
+            if(argvStr.substr(0,6) == "--help" && argvStr.size() == 6) {
+                flags.helpFlag = 1;
+                return flags;
+            }
+            continue;
+        }
 
         if(argvStr.substr(0,4) == "--d=" && argvStr.size() > 4) {
             flags.customFileDest = 1;
