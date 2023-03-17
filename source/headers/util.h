@@ -18,7 +18,7 @@ enum CompilePhase {
     middle
 };
 
-static const std::string cmmndLineArgsUsage = std::string("usage = ./star_compiler ([HELP_FLAG] | FILE_NAME [FLAGS])")
+static const std::string cmmndLineArgsUsage = std::string("usage = ./star_compiler (HELP_FLAG | FILE_NAME [FLAGS])")
 + "\n--d=destination_path to define the path"
 + " for the compiled file\n-ast to print the ast generated during compilation"
 + "\n-tac to print the generated three-address code"
